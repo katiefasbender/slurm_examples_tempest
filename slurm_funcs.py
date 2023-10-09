@@ -33,7 +33,7 @@ def write_jscript(job_name,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02
     email (str)
             If you're sending yourself email updates (advised)
     cpupt (int)
-            CPUs per task (physical CPUs)
+            CPUs per task (logical CPUs!)
     mempc (str)
             memory per CPU, with Byte unit (B,KB,MB,GB...)
     rtime (str)
