@@ -12,7 +12,7 @@ import subprocess
 #----------
 # Functions
 #----------
-def write_jscript(job_name,partition,cmds,dir=,cpupt=2,mempc="1G",rtime="02:00:00",parallel=False,email):
+def write_jscript(job_name,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02:00:00",parallel=False):
     ''' Creates SLURM job script to <dir>/<job_name>.sh to run on <partition>,
         & writes appropriate lines to the file.  Formatted for use on Tempest.
         - Lines starting with #SBATCH are read by Slurm. 
@@ -30,6 +30,8 @@ def write_jscript(job_name,partition,cmds,dir=,cpupt=2,mempc="1G",rtime="02:00:0
             python command(s) to run 
     dir (str)
             directory for job files (.sh, .out, .err)
+    email (str)
+            If you're sending yourself email updates (advised)
     cpupt (int)
             CPUs per task (physical CPUs)
     mempc (str)
@@ -39,8 +41,6 @@ def write_jscript(job_name,partition,cmds,dir=,cpupt=2,mempc="1G",rtime="02:00:0
     parallel (bool)
             True if running several commands in parallel
             as 1 job (by defining --ntasks>1)
-    email (str)
-            If you're sending yourself email updates (advised)
     --------
     Returns:
     --------
@@ -50,7 +50,7 @@ def write_jscript(job_name,partition,cmds,dir=,cpupt=2,mempc="1G",rtime="02:00:0
     # - Setup -
     job_file = dir+job_name+".sh"
     job_num = int(job_name.split("_")[-1]) # I include an indexing number in each job name for email updates
-    ncmd = len(cmd)
+    ncmd = len(cmds)
     # - Create job file (<dir>/<job_name>.sh) & write appropriate lines -
     with open(job_file,'w') as fh:
         fh.writelines("#!/bin/bash\n")                            # Tell computer what kind of file this is
