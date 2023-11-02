@@ -12,7 +12,7 @@ import subprocess
 #----------
 # Functions
 #----------
-def write_jscript(job_name,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02:00:00",parallel=False):
+def write_jscript(job_name,jobnum,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02:00:00",parallel=False):
     ''' Creates SLURM job script to <dir>/<job_name>.sh to run on <partition>,
         & writes appropriate lines to the file.  Formatted for use on Tempest.
         - Lines starting with #SBATCH are read by Slurm. 
@@ -24,6 +24,8 @@ def write_jscript(job_name,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02
     job_name (str)
             name of job, to be used for naming job script, 
             output, & error files
+    job_num (int)
+            an index to count the number of jobs you're submitting
     partition (str)
             node/partition the job will run on
     cmds (str list)
