@@ -112,7 +112,7 @@ def sacct_cmd(job_name,fields,c=False,m=False):
     # -- Setup sacct command format --
     if nfields>1: spref = "sacct -n -P --delimiter=',' --format "
     else: spref = "sacct -n -X --format "
-    scommand = (''.join([spref]+[i+"," for i in fields]))[:-1]+" --name "+job_name
+    scommand = spref+(','.join([i+"," for i in fields]))+" --name "+job_name
     # -- Which line of the sacct cmd output will contain our information --
     if c and m: line_index=2
     elif c and not m: line_index=1
