@@ -12,7 +12,7 @@ import subprocess
 #----------
 # Functions
 #----------
-def write_jscript(job_name,jobnum,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02:00:00",parallel=False,dependent="-99"):
+def write_jscript(job_name,jobnum,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02:00:00",parallel=False,dependent=[]):
     ''' Creates SLURM job script to <dir>/<job_name>.sh to run on <partition>,
         & writes appropriate lines to the file.  Formatted for use on Tempest.
         - Lines starting with #SBATCH are read by Slurm. 
@@ -43,8 +43,8 @@ def write_jscript(job_name,jobnum,partition,cmds,dir,email,cpupt=2,mempc="1G",rt
     parallel (bool)
             True if running several commands in parallel
             as 1 job (by defining --ntasks>1)
-    dependent (str)
-            Job ID of job that must finish before this one may begin
+    dependent (str list)
+            Job ID of each job that must finish before this one may begin
     --------
     Returns:
     --------
@@ -68,8 +68,9 @@ def write_jscript(job_name,jobnum,partition,cmds,dir,email,cpupt=2,mempc="1G",rt
         fh.writelines("#SBATCH --mem-per-cpu="+mempc+"\n")        # Memory per CPU, set with care!!!!!!
         fh.writelines("#SBATCH --time="+rtime+"\n")               # Maximum job run time
         # -- If job is dependent on completion of another job, make it so! -- 
-        if dependent!="-99":
-            fh.writelines("#SBATCH ---dependency=afterany:"+dependent+"\n") 
+        if len(dependent)!=0:
+            jids = ":".join([dependent])
+            fh.writelines("#SBATCH ---dependency=afterany:"+jids+"\n") 
         # -- Set up for parallel tasks, if applicable --
         if ncmd==1 or (ncmd>1 and not parallel):#-------------------If one cmd, or multiple cmds running in sequence
             fh.writelines("#SBATCH --ntasks=1\n")
