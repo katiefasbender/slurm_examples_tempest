@@ -5,13 +5,27 @@
 #--------
 # Imports
 #--------
-import numpy as np 
+import numpy as np
+import os
 import subprocess
 
 
 #----------
 # Functions
 #----------
+def makedir(dir):
+    '''makes a directory with name "dir" if it does not exist
+    Arguments:
+    ----------
+    dir (str)
+            directory name
+    Returns:
+    --------
+        None; directory "dir" is created if not already there
+    '''
+    if not os.path.exists(dir):
+        os.mkdir(dir)
+
 def write_jscript(job_name,jobnum,partition,cmds,dir,email,cpupt=2,mempc="1G",rtime="02:00:00",parallel=False,dependent=[]):
     ''' Creates SLURM job script to <dir>/<job_name>.sh to run on <partition>,
         & writes appropriate lines to the file.  Formatted for use on Tempest.
