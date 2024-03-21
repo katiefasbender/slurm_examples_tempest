@@ -84,7 +84,7 @@ def write_jscript(job_name,jobnum,partition,cmds,dir,email,cpupt=2,mempc="1G",rt
         # -- If job is dependent on completion of another job, make it so! -- 
         if len(dependent)!=0:
             jids = ":".join([dependent])
-            fh.writelines("#SBATCH ---dependency=afterany:"+jids+"\n") 
+            fh.writelines("#SBATCH --dependency=afterany:"+jids+"\n") 
         # -- Set up for parallel tasks, if applicable --
         if ncmd==1 or (ncmd>1 and not parallel):#-------------------If one cmd, or multiple cmds running in sequence
             fh.writelines("#SBATCH --ntasks=1\n")
